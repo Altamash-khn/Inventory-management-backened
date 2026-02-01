@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management APIs
+ */
+
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const { getDb } = require("../data/database");
@@ -5,7 +12,20 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-/* ================= GET ALL PRODUCTS ================= */
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all products
+ *       401:
+ *         description: Unauthorized
+ */
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const db = getDb();
@@ -17,7 +37,29 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-/* ================= GET SINGLE PRODUCT ================= */
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Get a single product by ID
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product ID
+ *     responses:
+ *       200:
+ *         description: Product found
+ *       400:
+ *         description: Invalid product ID
+ *       404:
+ *         description: Product not found
+ */
 router.get("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
 
@@ -38,7 +80,43 @@ router.get("/:id", authMiddleware, async (req, res) => {
   res.json(product);
 });
 
-/* ================= ADD PRODUCT ================= */
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Add a new product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - price
+ *               - quantity
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Keyboard
+ *               price:
+ *                 type: number
+ *                 example: 1499
+ *               quantity:
+ *                 type: number
+ *                 example: 10
+ *               category:
+ *                 type: string
+ *                 example: Electronics
+ *     responses:
+ *       201:
+ *         description: Product added successfully
+ *       400:
+ *         description: Validation error
+ */
 router.post("/", authMiddleware, async (req, res) => {
   const { name, price, quantity, category } = req.body;
 
@@ -71,7 +149,44 @@ router.post("/", authMiddleware, async (req, res) => {
   });
 });
 
-/* ================= UPDATE PRODUCT ================= */
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Update a product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               quantity:
+ *                 type: number
+ *               category:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Product not found
+ */
 router.put("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
   const { name, price, quantity, category } = req.body;
@@ -113,7 +228,29 @@ router.put("/:id", authMiddleware, async (req, res) => {
   res.json({ message: "Product updated successfully" });
 });
 
-/* ================= DELETE PRODUCT ================= */
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a product
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product ID
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ *       400:
+ *         description: Invalid product ID
+ *       404:
+ *         description: Product not found
+ */
 router.delete("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
 
