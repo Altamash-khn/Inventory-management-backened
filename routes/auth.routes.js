@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Authentication APIs
+ */
+
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -12,7 +19,39 @@ const router = express.Router();
 const JWT_SECRET = "supersecretkey"; // later move to .env
 const TOKEN_EXPIRY = "30d"; // 🔥 1 month
 
-/* ================== SIGNUP ================== */
+/**
+ * @swagger
+ * /signup:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 example: secret123
+ *     responses:
+ *       201:
+ *         description: Signup successful
+ *       400:
+ *         description: Validation error
+ */
+
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -56,7 +95,34 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-/* ================== LOGIN ================== */
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 example: secret123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,7 +159,20 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/* ================== PROFILE (PROTECTED) ================== */
+/**
+ * @swagger
+ * /profile:
+ *   get:
+ *     summary: Get logged-in user profile
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile
+ *       401:
+ *         description: Unauthorized
+ */
 router.get("/profile", authMiddleware, async (req, res) => {
   const db = getDb();
 

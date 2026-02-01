@@ -1,4 +1,6 @@
 require("dotenv").config();
+import cors from "cors";
+
 const express = require("express");
 const { connectToDatabase } = require("./data/database");
 const authRoutes = require("./routes/auth.routes");
@@ -7,8 +9,11 @@ const stockRoutes = require("./routes/stock.routes");
 const categoryRoutes = require("./routes/categories.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 
-
 const app = express();
+const swaggerUI = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
+
+app.use(cors());
 
 app.use(express.json());
 app.use(authRoutes);
@@ -16,6 +21,8 @@ app.use("/products", productRoutes);
 app.use("/stock", stockRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/dashboard", dashboardRoutes);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 connectToDatabase()
   .then(() => {
