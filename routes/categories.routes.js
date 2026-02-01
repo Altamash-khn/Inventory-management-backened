@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Categories
+ *   description: Category management APIs
+ */
+
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const { getDb } = require("../data/database");
@@ -5,16 +12,26 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-/* ================== GET ALL CATEGORIES ================== */
-/* GET /categories */
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     summary: Get all categories
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of categories
+ *       401:
+ *         description: Unauthorized
+ */
+
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const db = getDb();
 
-    const categories = await db
-      .collection("categories")
-      .find()
-      .toArray();
+    const categories = await db.collection("categories").find().toArray();
 
     res.json(categories);
   } catch (err) {
@@ -22,8 +39,33 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-/* ================== CREATE CATEGORY ================== */
-/* POST /categories */
+/**
+ * @swagger
+ * /categories:
+ *   post:
+ *     summary: Create a new category
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Electronics
+ *     responses:
+ *       201:
+ *         description: Category created successfully
+ *       400:
+ *         description: Validation error or category already exists
+ */
+
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name } = req.body;
@@ -58,8 +100,30 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-/* ================== DELETE CATEGORY ================== */
-/* DELETE /category/:id */
+/**
+ * @swagger
+ * /categories/category/{id}:
+ *   delete:
+ *     summary: Delete a category
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Category ID
+ *     responses:
+ *       200:
+ *         description: Category deleted successfully
+ *       400:
+ *         description: Invalid category ID
+ *       404:
+ *         description: Category not found
+ */
+
 router.delete("/category/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;

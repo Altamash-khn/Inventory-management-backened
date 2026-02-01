@@ -23,6 +23,13 @@ const options = {
         },
       },
     },
+    tags: [
+      { name: "Auth", description: "Authentication APIs" },
+      { name: "Dashboard", description: "Dashboard and analytics APIs" },
+      { name: "Categories", description: "Category management APIs" },
+      { name: "Stock", description: "Stock and inventory APIs" },
+      { name: "Products", description: "Product management APIs" },
+    ],
   },
 
   // ✅ ABSOLUTE PATH (THIS IS THE KEY)

@@ -19,10 +19,19 @@ app.use(express.json());
 app.use(authRoutes);
 app.use("/products", productRoutes);
 app.use("/stock", stockRoutes);
-app.use("/categories", categoryRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/categories", categoryRoutes);
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerSpec, {
+    swaggerOptions: {
+      tagsSorter: "none",
+      operationsShorter: "method",
+    },
+  }),
+);
 
 connectToDatabase()
   .then(() => {

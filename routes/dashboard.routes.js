@@ -1,11 +1,48 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Dashboard
+ *   description: Dashboard and analytics APIs
+ */
+
 const express = require("express");
 const { getDb } = require("../data/database");
 const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-/* ================== DASHBOARD SUMMARY ================== */
-/* GET /dashboard/summary */
+/**
+ * @swagger
+ * /dashboard/summary:
+ *   get:
+ *     summary: Get inventory dashboard summary
+ *     tags: [Dashboard]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dashboard summary statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalProducts:
+ *                   type: number
+ *                   example: 120
+ *                 totalQuantity:
+ *                   type: number
+ *                   example: 540
+ *                 lowStock:
+ *                   type: number
+ *                   example: 8
+ *                 outOfStock:
+ *                   type: number
+ *                   example: 3
+ *       401:
+ *         description: Unauthorized
+ */
+
 router.get("/summary", authMiddleware, async (req, res) => {
   try {
     const db = getDb();
