@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const { connectToDatabase } = require("./data/database");
 const authRoutes = require("./routes/auth.routes");
@@ -5,6 +6,7 @@ const productRoutes = require("./routes/products.routes");
 const stockRoutes = require("./routes/stock.routes");
 const categoryRoutes = require("./routes/categories.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
+
 
 const app = express();
 

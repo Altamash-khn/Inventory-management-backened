@@ -1,0 +1,9 @@
+### Create a new user (test Atlas connection)
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "testpassword123",
+  "name": "Test User"
+}
