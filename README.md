@@ -41,7 +41,7 @@ Authorization: Bearer <your_token_here>
 All API endpoints are documented using Swagger.
 
 Open Swagger API Docs at:  
-**[/api-docs]([https://inventory-management-backened.onrender.com/api-docs/](https://inventory-management-backened-1.onrender.com/api-docs/))**
+**[API Docs](https://inventory-management-backened-1.onrender.com/api-docs/)**
 
 ## Setup & Run
 
