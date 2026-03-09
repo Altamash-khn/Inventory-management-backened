@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://inventory-management-backened.onrender.com",
+        url: "https://inventory-management-backened-1.onrender.com/api-docs/",
       },
     ],
     components: {
